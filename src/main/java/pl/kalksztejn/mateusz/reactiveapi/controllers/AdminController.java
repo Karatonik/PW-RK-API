@@ -16,7 +16,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/admin")
-@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class AdminController {
 
     private ArticleService articleService;
