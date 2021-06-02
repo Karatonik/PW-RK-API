@@ -1,15 +1,17 @@
 package pl.kalksztejn.mateusz.reactiveapi.config;
 
 
+import io.jsonwebtoken.Claims;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
-//@Component
-public class AuthenticationManager /*implements ReactiveAuthenticationManager*/ {
-   /* private final JwtUtil jwtUtil;
+@Component
+public class AuthenticationManager implements ReactiveAuthenticationManager {
+    private final JwtUtil jwtUtil;
 
     public AuthenticationManager(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
@@ -43,5 +45,5 @@ public class AuthenticationManager /*implements ReactiveAuthenticationManager*/ 
         }
     }
 
-    */
+
 }

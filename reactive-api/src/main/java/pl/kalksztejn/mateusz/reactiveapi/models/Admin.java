@@ -4,17 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.util.Collection;
 import java.util.HashSet;
 @EqualsAndHashCode
 @NoArgsConstructor
-@Data
 @Getter
 @Setter
+@Data
 @Document
-public class Autor /* implements UserDetails */{
+public class Admin implements UserDetails {
     @Id
     String id;
 
@@ -22,24 +24,24 @@ public class Autor /* implements UserDetails */{
     @JsonIgnore
     String password;
 
-   // private Collection<? extends GrantedAuthority> authorities;
+    private Collection<? extends GrantedAuthority> authorities;
 
 
-    public Autor(String id, String login, String password) {
+    public Admin(String id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
-       // this.authorities = new HashSet<>();
+        this.authorities = new HashSet<>();
     }
 
-    public static Autor build(Autor autor) {
+    public static Admin build(Admin admin) {
 
-        return new Autor(
-                autor.getId(),
-                autor.getLogin(),
-                autor.getPassword());
+        return new Admin(
+                admin.getId(),
+                admin.getLogin(),
+                admin.getPassword());
     }
-/*
+
     @Override
     public String getUsername() {
         return this.login;
@@ -65,5 +67,5 @@ public class Autor /* implements UserDetails */{
         return true;
     }
 
- */
+
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 import pl.kalksztejn.mateusz.reactiveapi.models.Article;
 import pl.kalksztejn.mateusz.reactiveapi.repositorys.ArticleRepository;
+import pl.kalksztejn.mateusz.reactiveapi.services.Interfaces.ArticleServiceIf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -16,11 +17,10 @@ import java.util.List;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.http.ResponseEntity.ok;
 
 @Service
 
-public class ArticleService {
+public class ArticleService implements ArticleServiceIf {
 
     private ArticleRepository articleRepository;
 
@@ -31,65 +31,50 @@ public class ArticleService {
         this.articleRepository = articleRepository;
         this.gridFsTemplate = gridFsTemplate;
     }
-
+    @Override
     public Flux<Article> findAll() {
         return articleRepository.findAll();
     }
-
+    @Override
     public Flux<Article> findAllStream(){
         return Flux.zip(Flux.interval(Duration.ofSeconds(1)),articleRepository.findAll()).map(Tuple2::getT2);
 
     }
-
+    @Override
     public Mono<Article> findById(String id) {
         return articleRepository.findById(id);
     }
+    @Override
+    public Mono<Article> save( String title , String header , String text) {
+        return articleRepository.save(new Article(String.valueOf(title.hashCode()),title,header,text));
+    }
 
-    public Mono<Article> save(String id , String title , String header , String text) {
+    @Override
+    public Mono<Article> update(String id, String title, String header, String text) {
         return articleRepository.save(new Article(id,title,header,text));
     }
 
+    @Override
     public Mono<Void> delete(String id) {
         return articleRepository.deleteById(id);
     }
-
+    @Override
     public Mono<Article> addImg(String id ,Mono<FilePart> fileParts){
-      return  articleRepository.findById(id).flatMap(v->{
-                  return fileParts
-                           .flatMap(part -> this.gridFsTemplate.store(part.content(), part.filename()))
-                          .map(z ->{
-                           List<String> list= v.getImagesId();
-                           list.add(z.toHexString());
-                           v.setImagesId(list);
-                            return v;
-                              }).flatMap(z->articleRepository.save(z));
-        }
+      return  articleRepository.findById(id).flatMap(v-> fileParts
+               .flatMap(part -> this.gridFsTemplate.store(part.content(), part.filename()))
+              .map(z ->{
+               List<String> list= v.getImagesId();
+               list.add(z.toHexString());
+               v.setImagesId(list);
+                return v;
+                  }).flatMap(z->articleRepository.save(z))
         );
     }
+    @Override
     public Flux<Void> getImg(String id, ServerWebExchange exchange) {
     return this.gridFsTemplate.findOne(query(where("_id").is(id)))
             .log()
                 .flatMap(gridFsTemplate::getResource)
                 .flatMapMany(r -> exchange.getResponse().writeWith(r.getDownloadStream()));
 }
-
-
-
-    /*
-    public Flux<Object> read(String id, ServerWebExchange exchange) {
-   Flux<Object> flux=  articleRepository.findById(id).map(Article::getImagesId)
-                .flatMapMany(Flux::fromIterable).log()
-            .flatMap(z->{ return this.gridFsTemplate.findOne(query(where("_id").is(z))).log().flatMap(gridFsTemplate::getResource)
-                    .flatMapMany(r -> exchange.getResponse().writeWith(r.getDownloadStream()));
-            });
-
-      return   Flux.zip(Flux.interval(Duration.ofSeconds(1)),flux.;
-
-    }
-     */
-
-
-
-
-
 }

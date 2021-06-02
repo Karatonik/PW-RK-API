@@ -5,6 +5,7 @@ import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class Article {
     private String text;
     private List<String> imagesId;
 
+    private LocalDateTime localDateTime;
 
     public Article(String id, String title, String header, String text) {
         this.id = id;
@@ -31,5 +33,6 @@ public class Article {
         this.header = header;
         this.text = text;
         this.imagesId=new ArrayList<>();
+        this.localDateTime= LocalDateTime.now();
     }
 }
