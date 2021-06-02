@@ -60,7 +60,6 @@ public class AdminController {
         return articleService.update(id, title, header, text);
     }
     //DODANIE OBRAZKA ,ID artykułu
-
     @PostMapping("/img/{id}")
     public Publisher<ResponseEntity> upload(@PathVariable String id, @RequestPart Mono<FilePart> fileParts) {
 
