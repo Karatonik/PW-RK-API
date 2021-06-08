@@ -43,8 +43,8 @@ public class AdminController {
     }
 
     //TWORZENIE ARYKUŁU
-    @PostMapping("/{title}/{header}")
-    public Publisher<Article> create(@PathVariable String title, @PathVariable String header, @RequestBody String text) {
+    @PostMapping("/{title}/{header}/{text}")
+    public Publisher<Article> create(@PathVariable String title, @PathVariable String header, @PathVariable String text) {
         return articleService.save(title, header, text);
     }
 
