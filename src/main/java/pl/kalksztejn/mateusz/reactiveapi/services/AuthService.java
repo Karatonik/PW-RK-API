@@ -28,6 +28,7 @@ public class AuthService implements AuthServiceIf {
         this.encoder = encoder;
         this.jwtUtil = jwtUtil;
     }
+
     @Override
     public Mono<ResponseEntity> singIn(LoginRequest loginRequest) {
         return adminService.findByUsername(loginRequest.getLogin()).cast(Admin.class).map(userDetails -> encoder.matches(
@@ -37,6 +38,7 @@ public class AuthService implements AuthServiceIf {
                 ? ResponseEntity.ok(jwtUtil.generateToken(userDetails))
                 : UNAUTHORIZED);
     }
+
     @Override
     public Mono<String> singUp(LoginRequest loginRequest) {
         return adminService.save(String.valueOf(loginRequest.hashCode()), loginRequest.getLogin()

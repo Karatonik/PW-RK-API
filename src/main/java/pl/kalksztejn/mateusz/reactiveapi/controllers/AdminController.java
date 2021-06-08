@@ -31,7 +31,7 @@ public class AdminController {
     }
 
     //LOGOWANIE zwraca JWT TOKEN
-    @GetMapping("/singin")
+    @PostMapping("/singin")
     public Mono<ResponseEntity> login(@RequestBody LoginRequest loginRequest) {
         return authService.singIn(loginRequest);
     }
