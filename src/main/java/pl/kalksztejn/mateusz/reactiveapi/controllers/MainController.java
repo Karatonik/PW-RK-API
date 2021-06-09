@@ -30,7 +30,7 @@ public class MainController {
         return articleService.findById(id);
     }
     //POBRANIE ZDJĘCIA
-    @GetMapping("/img/{imageId}")
+    @GetMapping(path = "/img/{imageId}")
     public Publisher<Void> read(@PathVariable String imageId, ServerWebExchange exchange) {
         return articleService.getImg(imageId, exchange);
     }

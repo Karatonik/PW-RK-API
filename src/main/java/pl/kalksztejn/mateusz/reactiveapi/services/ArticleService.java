@@ -22,59 +22,64 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 public class ArticleService implements ArticleServiceIf {
 
-    private ArticleRepository articleRepository;
-
     private final ReactiveGridFsTemplate gridFsTemplate;
+    private ArticleRepository articleRepository;
 
     @Autowired
     public ArticleService(ArticleRepository articleRepository, ReactiveGridFsTemplate gridFsTemplate) {
         this.articleRepository = articleRepository;
         this.gridFsTemplate = gridFsTemplate;
     }
+
     @Override
     public Flux<Article> findAll() {
         return articleRepository.findAll();
     }
+
     @Override
-    public Flux<Article> findAllStream(){
-        return Flux.zip(Flux.interval(Duration.ofSeconds(1)),articleRepository.findAll()).map(Tuple2::getT2);
+    public Flux<Article> findAllStream() {
+        return Flux.zip(Flux.interval(Duration.ofSeconds(1)), articleRepository.findAll()).map(Tuple2::getT2);
 
     }
+
     @Override
     public Mono<Article> findById(String id) {
         return articleRepository.findById(id);
     }
+
     @Override
-    public Mono<Article> save( String title , String header , String text) {
-        return articleRepository.save(new Article(String.valueOf(title.hashCode()),title,header,text));
+    public Mono<Article> save(String title, String header, String text) {
+        return articleRepository.save(new Article(String.valueOf(title.hashCode()), title, header, text));
     }
 
     @Override
     public Mono<Article> update(String id, String title, String header, String text) {
-        return articleRepository.save(new Article(id,title,header,text));
+        return articleRepository.save(new Article(id, title, header, text));
     }
 
     @Override
     public Mono<Void> delete(String id) {
         return articleRepository.deleteById(id);
     }
+
     @Override
-    public Mono<Article> addImg(String id ,Mono<FilePart> fileParts){
-      return  articleRepository.findById(id).flatMap(v-> fileParts
-               .flatMap(part -> this.gridFsTemplate.store(part.content(), part.filename()))
-              .map(z ->{
-               List<String> list= v.getImagesId();
-               list.add(z.toHexString());
-               v.setImagesId(list);
-                return v;
-                  }).flatMap(z->articleRepository.save(z))
+    public Mono<Article> addImg(String id, Mono<FilePart> fileParts) {
+        return articleRepository.findById(id).flatMap(v -> fileParts
+                .flatMap(part -> this.gridFsTemplate.store(part.content(), part.filename()))
+                .map(z -> {
+                    List<String> list = v.getImagesId();
+                    list.add(z.toHexString());
+                    v.setImagesId(list);
+                    return v;
+                }).flatMap(z -> articleRepository.save(z))
         );
     }
+
     @Override
     public Flux<Void> getImg(String id, ServerWebExchange exchange) {
-    return this.gridFsTemplate.findOne(query(where("_id").is(id)))
-            .log()
+        return this.gridFsTemplate.findOne(query(where("_id").is(id)))
+                .log()
                 .flatMap(gridFsTemplate::getResource)
                 .flatMapMany(r -> exchange.getResponse().writeWith(r.getDownloadStream()));
-}
+    }
 }

@@ -1,6 +1,7 @@
 package pl.kalksztejn.mateusz.reactiveapi.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
@@ -47,6 +48,7 @@ public class WebSecurityConfig {
                                 )
                 )
                 .and()
+                .cors().disable()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
