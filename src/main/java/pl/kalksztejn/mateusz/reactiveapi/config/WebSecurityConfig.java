@@ -56,7 +56,7 @@ public class WebSecurityConfig {
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
                 .pathMatchers("/", "/favicon.ico").permitAll()
-                .pathMatchers("/api/**").permitAll()
+                .pathMatchers("/api/**","/admin/**").permitAll()
                 .pathMatchers("/admin/singin","/admin/singup").permitAll()
                 .anyExchange().authenticated()
                 .and()

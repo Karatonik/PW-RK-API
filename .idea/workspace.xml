@@ -4,9 +4,6 @@
     <list default="true" id="78cf986c-49f3-49fd-8240-44031138d1f4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/config/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/controllers/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/controllers/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/controllers/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/services/ArticleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pl/kalksztejn/mateusz/reactiveapi/services/ArticleService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,6 +109,7 @@
       <workItem from="1623149394265" duration="4729000" />
       <workItem from="1623163396533" duration="2300000" />
       <workItem from="1623197172354" duration="4677000" />
+      <workItem from="1623225277473" duration="75000" />
     </task>
     <servers />
   </component>
